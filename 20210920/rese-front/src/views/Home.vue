@@ -3,7 +3,7 @@
    <Header />
    <div class="wrapper">
      <ul class="list-item">
-       <li class="list-item__content" v-for="(shop, index) in shops" :key="index">
+       <li class="list-item__content" v-for="(shop, index) in shops" :key="index.id">
          <div class="card-item">
            <p class="card-item__img">
              <img :src="shop.shop_img" v-bind:alt="shop.shop_name">
@@ -44,10 +44,18 @@ export default {
   methods: {
     getShops() {
       axios.get('http://127.0.0.1:8000/api/shop')
-        .then((res) => {
-            this.shops = res.data.data;
+        .then((response) => {
+          // handle success(axiosの処理が成功した場合に処理させたいことを記述)
+          this.shops = response.data.data;
+        })
+        .catch((error) => {
+          // handle error(axiosの処理にエラーが発生した場合に処理させたいことを記述)
+          console.log(error);
+        })
+        .finally(() => {
+          // always executed(axiosの処理結果によらずいつも実行させたい処理を記述)
         });
-    }
+    },
   },
   mounted() {
     this.getShops();
